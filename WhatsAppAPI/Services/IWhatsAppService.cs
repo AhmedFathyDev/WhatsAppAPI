@@ -4,5 +4,5 @@ namespace WhatsAppAPI.Services;
 
 public interface IWhatsAppService
 {
-    Task SendAsync(string phone);
+    Task SendAsync(string phone, string body);
 }

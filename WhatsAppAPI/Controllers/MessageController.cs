@@ -10,11 +10,14 @@ namespace WhatsAppAPI.Controllers;
 public class MessageController(IWhatsAppService service) : ControllerBase
 {
     [HttpPost]
-    public async Task<IActionResult> Send([FromQuery] string phone)
+    public async Task<IActionResult> Send([FromQuery] string phone, [FromQuery] string body)
     {
+        if (string.IsNullOrEmpty(phone))
+            return BadRequest("The phone number cannot be null or empty.");
+
         try
         {
-            await service.SendAsync(phone);
+            await service.SendAsync(phone, body);
             return Ok("Message sent successfully...");
         }
         catch(Exception exception)
