@@ -21,7 +21,7 @@ WhatsAppAPI is a simple ASP.NET Core Web API for sending WhatsApp messages. It p
 ### Installation
 1. Clone the repository:
     ```sh
-    git clone https://github.com/yourusername/WhatsAppAPI.git
+    git clone https://github.com/AhmedFathyDev/WhatsAppAPI.git
     ```
 2. Navigate to the project directory:
     ```sh
