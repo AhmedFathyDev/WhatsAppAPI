@@ -16,6 +16,7 @@ public class WhatsAppService(IOptions<MetaSettings> metaSettings) : IWhatsAppSer
     {
         var request = new HttpRequestMessage(HttpMethod.Post,
             $"{metaSettings.Value.Url}/v21.0/{metaSettings.Value.PhoneNumberId}/messages");
+
         request.SetBearerToken(metaSettings.Value.AccessToken);
 
         request.Content = new StringContent(JsonConvert.SerializeObject(new
@@ -31,10 +32,8 @@ public class WhatsAppService(IOptions<MetaSettings> metaSettings) : IWhatsAppSer
         }), Encoding.UTF8, "application/json");
 
         using var response = await Client.SendAsync(request);
+
         if (!response.IsSuccessStatusCode)
-        {
-            var responseBody = await response.Content.ReadAsStringAsync();
-            throw new HttpRequestException($"Failed to send message: {response.StatusCode} - {responseBody}");
-        }
+            throw new HttpRequestException($"Failed to send message: {response.StatusCode} - {await response.Content.ReadAsStringAsync()}");
     }
 }
