@@ -15,8 +15,8 @@ builder.Services.AddSingleton<IWhatsAppService, WhatsAppService>();
 
 var openApiInfo = new OpenApiInfo
 {
-    Title = "WhatsAppAPI",
-    Version = "v1"
+    Title = builder.Configuration["SwaggerSettings:Title"],
+    Version = builder.Configuration["SwaggerSettings:Version"]
 };
 
 builder.Services.AddSwaggerService(openApiInfo);
