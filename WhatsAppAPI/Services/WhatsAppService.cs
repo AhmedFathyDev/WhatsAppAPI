@@ -15,14 +15,13 @@ public class WhatsAppService(IOptions<MetaSettings> metaSettings) : IWhatsAppSer
     public async Task SendAsync(string phone, string body)
     {
         var request = new HttpRequestMessage(HttpMethod.Post,
-            $"{metaSettings.Value.Url}/v21.0/{metaSettings.Value.PhoneNumberId}/messages");
+            $"{metaSettings.Value.Url}/{metaSettings.Value.ApiVersion}/{metaSettings.Value.WhatsAppPhoneNumberId}/messages");
 
-        request.SetBearerToken(metaSettings.Value.AccessToken);
+        request.SetBearerToken(metaSettings.Value.WhatsAppAccessToken);
 
         request.Content = new StringContent(JsonConvert.SerializeObject(new
         {
             messaging_product = "whatsapp",
-            recipient_type = "individual",
             to = phone,
             type = "text",
             text = new {
@@ -34,6 +33,6 @@ public class WhatsAppService(IOptions<MetaSettings> metaSettings) : IWhatsAppSer
         using var response = await Client.SendAsync(request);
 
         if (!response.IsSuccessStatusCode)
-            throw new HttpRequestException($"Failed to send message: {response.StatusCode} - {await response.Content.ReadAsStringAsync()}");
+            throw new HttpRequestException($"Failed to send message to {phone}");
     }
 }
