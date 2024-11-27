@@ -2,10 +2,13 @@ using Fathy.Swagger;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
+using Serilog;
 using WhatsAppAPI.Models;
 using WhatsAppAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog((context, config) => config.ReadFrom.Configuration(context.Configuration));
 
 builder.Services.AddControllers();
 
@@ -22,6 +25,8 @@ var openApiInfo = new OpenApiInfo
 builder.Services.AddSwaggerService(openApiInfo);
 
 var app = builder.Build();
+
+app.UseSerilogRequestLogging();
 
 app.UseSwagger();
 

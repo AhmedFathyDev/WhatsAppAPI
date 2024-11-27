@@ -17,6 +17,9 @@ public class MessageController(IWhatsAppService service) : ControllerBase
         if (string.IsNullOrEmpty(phone))
             return BadRequest("The phone number cannot be null or empty.");
 
+        // service.SendAsync(phone, body);
+        // return Ok();
+
         try
         {
             await service.SendAsync(phone, body);
@@ -31,8 +34,16 @@ public class MessageController(IWhatsAppService service) : ControllerBase
     [HttpPost]
     public async Task<IActionResult> SendToList([FromQuery] List<string> phones, [FromQuery] string body)
     {
-        if (phones == null || phones.Count == 0 || phones.Any(string.IsNullOrEmpty))
-            return BadRequest("The phone numbers list cannot be null or have any phone number null or empty.");
+        if (phones.Count == 0 || phones.Any(string.IsNullOrEmpty))
+            return BadRequest("The phone numbers list cannot be empty or have any phone number null or empty.");
+
+        // Task.Run(() =>
+        // {
+        //     foreach (var phone in phones)
+        //         service.SendAsync(phone, body);
+        // });
+        //
+        // return Ok();
 
         var failedNumbers = new List<string>();
 
